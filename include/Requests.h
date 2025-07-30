@@ -5,8 +5,9 @@
 #include "Models.h"
 
 class Requests {
-public:
+private:
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
+public:
     static Models::AccessTokenResp* GetAccessToken(std::string access, std::string password);
     static Models::ResponseContent* GetApiReturn(std::string token, std::string cpf, std::string apikey);
 };
