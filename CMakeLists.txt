@@ -36,6 +36,8 @@ add_executable(ConsNot
         include/Database.h
         lib/dotenv.h
         lib/json.h
+        include/D_Insert.h
+        src/D_Insert.cpp
 )
 
 target_link_libraries(ConsNot
