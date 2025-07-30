@@ -103,6 +103,18 @@ struct AccessTokenResp {
     AuthenticationResult AuthenticationResult;
 };
 
+struct Logins {
+    int login1;
+    int login2;
+    int login3;
+    int login4;
+};
+
+struct Pessoa {
+    std::string nome;
+    std::string numero;
+};
+
 }
 
 #endif
