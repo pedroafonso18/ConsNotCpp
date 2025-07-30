@@ -9,4 +9,5 @@ add_executable(ConsNot src/main.cpp
         src/Config.cpp
         include/Models.h
         include/Requests.h
-        src/Requests.cpp)
+        src/Requests.cpp
+        lib/json.h)
