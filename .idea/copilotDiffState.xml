@@ -3,12 +3,28 @@
   <component name="CopilotDiffPersistence">
     <option name="pendingDiffs">
       <map>
+        <entry key="$PROJECT_DIR$/CMakeLists.txt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/CMakeLists.txt" />
+              <option name="originalContent" value="cmake_minimum_required(VERSION 3.31)&#10;project(ConsNot)&#10;&#10;set(CMAKE_CXX_STANDARD 11)&#10;&#10;set(OPENSSL_ROOT_DIR &quot;C:/msys64/mingw64&quot;)&#10;set(CURL_ROOT_DIR &quot;C:/msys64/mingw64&quot;)&#10;&#10;set(ZLIB_ROOT &quot;C:/msys64/mingw64&quot;)&#10;set(ZLIB_INCLUDE_DIR &quot;${ZLIB_ROOT}/include&quot;)&#10;set(ZLIB_LIBRARY &quot;${ZLIB_ROOT}/lib/libz.dll.a&quot;)&#10;&#10;find_package(OpenSSL REQUIRED)&#10;&#10;find_package(CURL REQUIRED)&#10;&#10;find_package(ZLIB REQUIRED)&#10;&#10;include_directories(&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/src&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/include&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/lib&#10;    ${CURL_INCLUDE_DIRS}&#10;    ${OPENSSL_INCLUDE_DIR}&#10;    ${ZLIB_INCLUDE_DIR}&#10;&#10;)&#10;&#10;add_executable(ConsNot&#10;    src/main.cpp&#10;    include/Config.h&#10;    lib/dotenv.h&#10;    src/Config.cpp&#10;    include/Models.h&#10;    include/Requests.h&#10;    src/Requests.cpp&#10;    lib/json.h&#10;    include/Utils.h&#10;    include/Database.h&#10;)&#10;&#10;target_link_libraries(ConsNot PRIVATE ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES})&#10;" />
+              <option name="updatedContent" value="cmake_minimum_required(VERSION 3.31)&#10;project(ConsNot)&#10;&#10;set(CMAKE_CXX_STANDARD 11)&#10;&#10;set(OPENSSL_ROOT_DIR &quot;C:/msys64/mingw64&quot;)&#10;set(CURL_ROOT_DIR &quot;C:/msys64/mingw64&quot;)&#10;&#10;set(ZLIB_ROOT &quot;C:/msys64/mingw64&quot;)&#10;set(ZLIB_INCLUDE_DIR &quot;${ZLIB_ROOT}/include&quot;)&#10;set(ZLIB_LIBRARY &quot;${ZLIB_ROOT}/lib/libz.dll.a&quot;)&#10;&#10;# Add fmt library source files from local copy&#10;set(FMT_SRC &#10;    ${CMAKE_CURRENT_SOURCE_DIR}/lib/fmt/format.cc&#10;)&#10;&#10;# Create fmt library&#10;add_library(fmt STATIC ${FMT_SRC})&#10;target_include_directories(fmt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)&#10;&#10;find_package(OpenSSL REQUIRED)&#10;find_package(CURL REQUIRED)&#10;find_package(ZLIB REQUIRED)&#10;&#10;include_directories(&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/src&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/include&#10;    ${CMAKE_CURRENT_SOURCE_DIR}/lib&#10;    ${CURL_INCLUDE_DIRS}&#10;    ${OPENSSL_INCLUDE_DIR}&#10;    ${ZLIB_INCLUDE_DIR}&#10;)&#10;&#10;add_executable(ConsNot&#10;    src/main.cpp&#10;    include/Config.h&#10;    lib/dotenv.h&#10;    src/Config.cpp&#10;    include/Models.h&#10;    include/Requests.h&#10;    src/Requests.cpp&#10;    lib/json.h&#10;    include/Utils.h&#10;    include/Database.h&#10;)&#10;&#10;target_link_libraries(ConsNot PRIVATE ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES} fmt)" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/include/Utils.h">
           <value>
             <PendingDiffInfo>
               <option name="filePath" value="$PROJECT_DIR$/include/Utils.h" />
               <option name="originalContent" value="#ifndef UTILS_H&#10;#define UTILS_H&#10;#include &lt;string&gt;&#10;&#10;class Utils {&#10;public:&#10;    static inline std::string cleanCpf(std::string cpf) {&#10;        cpf.        &#10;    }&#10;};&#10;&#10;#endif" />
               <option name="updatedContent" value="#ifndef UTILS_H&#10;#define UTILS_H&#10;#include &lt;string&gt;&#10;#include &lt;algorithm&gt;&#10;&#10;class Utils {&#10;public:&#10;    static inline std::string cleanCpf(std::string cpf) {&#10;        // Remove dots and dashes from the CPF&#10;        cpf.erase(std::remove_if(cpf.begin(), cpf.end(), &#10;                  [](char c) { return c == '.' || c == '-'; }), &#10;                  cpf.end());&#10;        return cpf;&#10;    }&#10;};&#10;&#10;#endif" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lib/fmt/format.cc">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/lib/fmt/format.cc" />
             </PendingDiffInfo>
           </value>
         </entry>

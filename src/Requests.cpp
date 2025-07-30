@@ -1,7 +1,7 @@
 #include "../include/Requests.h"
 #include <iostream>
 #include <curl/curl.h>
-#include "../lib/fmt/format.h"
+#include <fmt/format.h>
 #include "../lib/json.h"
 #include "../include/Utils.h"
 
