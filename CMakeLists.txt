@@ -6,4 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(ConsNot src/main.cpp
         include/Config.h
         lib/dotenv.h
-        src/Config.cpp)
+        src/Config.cpp
+        include/Models.h
+        include/Requests.h
+        src/Requests.cpp)
