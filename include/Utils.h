@@ -2,6 +2,8 @@
 #define UTILS_H
 #include <string>
 #include <algorithm>
+#include <chrono>
+#include <ctime>
 
 class Utils {
 public:
@@ -11,6 +13,31 @@ public:
                   cpf.end());
         return cpf;
     }
+
+    static bool IsAllowedTime() {
+        auto now = std::chrono::system_clock::now();
+        auto time_t_now = std::chrono::system_clock::to_time_t(now);
+        std::tm* tm_now = std::localtime(&time_t_now);
+
+        std::tm start_tm = *tm_now;
+        start_tm.tm_hour = 21;
+        start_tm.tm_min = 30;
+        start_tm.tm_sec = 0;
+        auto start_time = std::chrono::system_clock::from_time_t(std::mktime(&start_tm));
+
+        std::tm end_tm = *tm_now;
+        end_tm.tm_hour = 2;
+        end_tm.tm_min = 30;
+        end_tm.tm_sec = 0;
+        auto end_time = std::chrono::system_clock::from_time_t(std::mktime(&end_tm));
+
+        if (start_time <= end_time) {
+            return (now >= start_time) && (now <= end_time);
+        } else {
+            return (now >= start_time) || (now <= end_time);
+        }
+    }
+
 };
 
 #endif

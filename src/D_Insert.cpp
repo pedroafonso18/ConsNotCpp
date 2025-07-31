@@ -14,9 +14,9 @@ void Insert::insertConsultaLog(std::string cpf, std::string saldo, std::string a
     try {
         pqxx::result res;
         if (nome != "" && numero != "") {
-            res = transaction.exec_params("INSERT INTO logs_consultas (cpf, saldo_consultado, erro, aviso, login, nome, numero) VALUES ($1, $2, $3, $4, $5, $6, $7)", cpf, saldo, err_str, aviso, login, nome, numero);
+            res = transaction.exec(pqxx::zview("INSERT INTO logs_consultas (cpf, saldo_consultado, erro, aviso, login, nome, numero) VALUES ($1, $2, $3, $4, $5, $6, $7)"), pqxx::params(cpf, saldo, err_str, aviso, login, nome, numero));
         } else {
-            res = transaction.exec_params("INSERT INTO logs_consultas (cpf, saldo_consultado, erro, aviso, login) VALUES ($1, $2, $3, $4, $5)", cpf, saldo, err_str, aviso, login);
+            res = transaction.exec(pqxx::zview("INSERT INTO logs_consultas (cpf, saldo_consultado, erro, aviso, login) VALUES ($1, $2, $3, $4, $5)"), pqxx::params(cpf, saldo, err_str, aviso, login));
         }
         if (!res.affected_rows() == 0) {
             std::clog << "ERROR: error when inserting Enqueued.\n";
@@ -37,7 +37,7 @@ void Insert::updateConsultado(std::string cpf, std::string campanha) {
     }
     pqxx::work transaction(*c);
     try {
-        pqxx::result res = transaction.exec_params("UPDATE consultar SET consultado = true WHERE cpf = $1 AND campanha = $2", cpf, campanha);
+        pqxx::result res = transaction.exec(pqxx::zview("UPDATE consultar SET consultado = true WHERE cpf = $1 AND campanha = $2"), pqxx::params(cpf, campanha));
         if (!res.affected_rows() == 0) {
             std::clog << "ERROR: error when inserting Enqueued.\n";
         }

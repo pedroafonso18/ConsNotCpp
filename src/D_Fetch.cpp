@@ -24,7 +24,7 @@ std::unique_ptr<Models::Pessoa> Fetch::fetchConsultas(const Database *stormClien
     std::cout << "With parameters: " << cpf << " and " << cleaned_cpf << std::endl;
 
     try {
-        auto result = transaction.exec(query, cpf, cleaned_cpf);
+        auto result = transaction.exec(pqxx::zview(query), pqxx::params(cpf, cleaned_cpf));
         if (!result.empty()) {
             pessoa->nome = result[0][0].as<std::string>();
             pessoa->numero = result[0][1].as<std::string>();
@@ -38,7 +38,7 @@ std::unique_ptr<Models::Pessoa> Fetch::fetchConsultas(const Database *stormClien
         std::cout << "Tentando buscar na base Storm..." << std::endl;
 
         std::string stormQuery = "SELECT cliente, telefone_celular FROM digitados_sistema WHERE cpf_cliente = $1 LIMIT 1";
-        auto stormResult = storm_transaction.exec(stormQuery, cpf);
+        auto stormResult = storm_transaction.exec(pqxx::zview(stormQuery), pqxx::params(cpf));
 
         if (!stormResult.empty()) {
             pessoa->nome = stormResult[0][0].as<std::string>();
@@ -61,7 +61,7 @@ std::unique_ptr<Models::Pessoa> Fetch::fetchConsultas(const Database *stormClien
 }
 
 std::unique_ptr<Models::Logins> Fetch::countConsultas(std::string user1, std::string user2, std::string user3, std::string user4) const {
-    const auto c = db->getConnection();
+    auto c = db->getConnection();
     if (!c->is_open()) {
         std::clog << "ERROR: db connection is not open.\n";
         throw std::runtime_error("DB CONNECTION IS NOT ACTIVE");
@@ -70,7 +70,7 @@ std::unique_ptr<Models::Logins> Fetch::countConsultas(std::string user1, std::st
 
     auto logins = std::unique_ptr<Models::Logins>(new Models::Logins());
     try {
-        const auto result = transaction.exec("SELECT COUNT(CASE WHEN login = $1 THEN 1 END) as login1, COUNT(CASE WHEN login = $2 THEN 1 END) as login2, COUNT(CASE WHEN login = $3 THEN 1 END) as login3, COUNT(CASE WHEN login = $4 THEN 1 END) as login4 FROM logs_consultas WHERE created_at >= NOW() - INTERVAL '24 hours'", user1, user2, user3, user4);
+        auto result = transaction.exec(pqxx::zview("SELECT COUNT(CASE WHEN login = $1 THEN 1 END) as login1, COUNT(CASE WHEN login = $2 THEN 1 END) as login2, COUNT(CASE WHEN login = $3 THEN 1 END) as login3, COUNT(CASE WHEN login = $4 THEN 1 END) as login4 FROM logs_consultas WHERE created_at >= NOW() - INTERVAL '24 hours'"), pqxx::params(user1, user2, user3, user4));
         if (!result.empty()) {
             logins->login1 = result[0][0].as<int>();
             logins->login2 = result[0][1].as<int>();
@@ -98,7 +98,7 @@ std::string Fetch::fetchCurrentCampaign() const {
     try {
         pqxx::work transaction(*c);
         const auto result = transaction.exec("SELECT campanha_ativa FROM config LIMIT 1");
-        std::string campanha = result.one_field().as<std::string>();
+        std::string campanha = result[0][0].as<std::string>();
         transaction.commit();
         return campanha;
     } catch (const pqxx::sql_error& e) {
@@ -117,7 +117,7 @@ bool Fetch::isPaused() const {
         pqxx::work transaction(*c);
         const auto result = transaction.exec("SELECT pausado FROM config");
         transaction.commit();
-        return result.one_field().as<bool>();
+        return result[0][0].as<bool>();
     } catch (const pqxx::sql_error& e) {
         throw std::runtime_error("Database error: " + std::string(e.what()));
     }
@@ -134,7 +134,7 @@ std::vector<std::string> Fetch::fetchCustomers() const {
     try {
         std::vector<std::string> vec;
         pqxx::work transaction(*c);
-        const auto result = transaction.exec("SELECT cpf FROM consultar WHERE consultado = false AND campanha = $1 LIMIT 10", campanha);
+        const auto result = transaction.exec(pqxx::zview("SELECT cpf FROM consultar WHERE consultado = false AND campanha = $1 LIMIT 10"), pqxx::params(campanha));
         for (auto row : result) {
             vec.push_back(row[0].as<std::string>());
         }
