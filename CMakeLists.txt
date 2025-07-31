@@ -38,6 +38,8 @@ add_executable(ConsNot
         lib/json.h
         include/D_Insert.h
         src/D_Insert.cpp
+        include/D_Fetch.h
+        src/D_Fetch.cpp
 )
 
 target_link_libraries(ConsNot

@@ -25,6 +25,8 @@ void Insert::insertConsultaLog(std::string cpf, std::string saldo, std::string a
         transaction.abort();
         throw std::runtime_error("Database error: " + std::string(e.what()));
     }
+
+    transaction.commit();
 }
 
 void Insert::updateConsultado(std::string cpf, std::string campanha) {
@@ -43,4 +45,5 @@ void Insert::updateConsultado(std::string cpf, std::string campanha) {
         transaction.abort();
         throw std::runtime_error("Database error: " + std::string(e.what()));
     }
+    transaction.commit();
 }
