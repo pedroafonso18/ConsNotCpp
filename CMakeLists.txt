@@ -18,8 +18,8 @@ find_package(CURL REQUIRED)
 find_package(ZLIB REQUIRED)
 
 include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib
         ${CURL_INCLUDE_DIRS}
         ${OPENSSL_INCLUDE_DIR}
         ${ZLIB_INCLUDE_DIR}
@@ -30,17 +30,19 @@ add_executable(ConsNot
         src/main.cpp
         src/Config.cpp
         src/Requests.cpp
+        src/D_Insert.cpp
+        src/D_Fetch.cpp
         include/Config.h
         include/Models.h
         include/Requests.h
         include/Utils.h
         include/Database.h
+        include/D_Insert.h
+        include/D_Fetch.h
         lib/dotenv.h
         lib/json.h
-        include/D_Insert.h
-        src/D_Insert.cpp
-        include/D_Fetch.h
-        src/D_Fetch.cpp
+        include/Process.h
+        src/Process.cpp
 )
 
 target_link_libraries(ConsNot
@@ -48,9 +50,32 @@ target_link_libraries(ConsNot
         ${CURL_LIBRARIES}
         ${OPENSSL_LIBRARIES}
         ${ZLIB_LIBRARY}
-        ${PQXX_LIBRARY}
         fmt::fmt
         pqxx
         pq
-
 )
+
+add_executable(ConsNotTests
+        lib/catch_amalgamated.cpp
+        tests/CatchMain.cpp
+        tests/Utils.cpp
+)
+
+target_include_directories(ConsNotTests PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests
+)
+
+target_link_libraries(ConsNotTests
+        PRIVATE
+        ${CURL_LIBRARIES}
+        ${OPENSSL_LIBRARIES}
+        ${ZLIB_LIBRARY}
+        fmt::fmt
+        pqxx
+        pq
+)
+
+enable_testing()
+add_test(NAME ConsNotTests COMMAND ConsNotTests)

@@ -60,7 +60,7 @@ std::unique_ptr<Models::Pessoa> Fetch::fetchConsultas(const Database *stormClien
     }
 }
 
-std::unique_ptr<Models::Logins> Fetch::countConsultas(std::string user1, std::string user2, std::string user3, std::string user4) const {
+std::string Fetch::countConsultas(std::string user1, std::string user2, std::string user3, std::string user4) const {
     auto c = db->getConnection();
     if (!c->is_open()) {
         std::clog << "ERROR: db connection is not open.\n";
@@ -68,20 +68,16 @@ std::unique_ptr<Models::Logins> Fetch::countConsultas(std::string user1, std::st
     }
     pqxx::work transaction(*c);
 
-    auto logins = std::unique_ptr<Models::Logins>(new Models::Logins());
     try {
-        auto result = transaction.exec(pqxx::zview("SELECT COUNT(CASE WHEN login = $1 THEN 1 END) as login1, COUNT(CASE WHEN login = $2 THEN 1 END) as login2, COUNT(CASE WHEN login = $3 THEN 1 END) as login3, COUNT(CASE WHEN login = $4 THEN 1 END) as login4 FROM logs_consultas WHERE created_at >= NOW() - INTERVAL '24 hours'"), pqxx::params(user1, user2, user3, user4));
+        auto result = transaction.exec(pqxx::zview("WITH counts AS ( SELECT COUNT(CASE WHEN login = $1 THEN 1 END) AS login1, COUNT(CASE WHEN login = $2 THEN 1 END) AS login2, COUNT(CASE WHEN login = $3 THEN 1 END) AS login3, COUNT(CASE WHEN login = $4 THEN 1 END) AS login4 FROM logs_consultas WHERE created_at >= NOW() - INTERVAL '24 hours' ) SELECT login, count FROM counts, LATERAL ( VALUES ($1, login1), ($2, login2), ($3, login3), ($4, login4) ) AS t(login, count) ORDER BY count ASC LIMIT 1;"), pqxx::params(user1, user2, user3, user4));
         if (!result.empty()) {
-            logins->login1 = result[0][0].as<int>();
-            logins->login2 = result[0][1].as<int>();
-            logins->login3 = result[0][2].as<int>();
-            logins->login4 = result[0][3].as<int>();
+            auto login = result[0][0].as<std::string>;
             transaction.commit();
-            return logins;
+            return login;
         }
 
         transaction.commit();
-        return nullptr;
+        return "";
     } catch (pqxx::sql_error const& e) {
         transaction.abort();
         throw std::runtime_error("Database error: " + std::string(e.what()));
