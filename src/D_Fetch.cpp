@@ -17,7 +17,7 @@ std::unique_ptr<Models::Pessoa> Fetch::fetchConsultas(const Database *stormClien
     pqxx::work transaction(*c);
     pqxx::work storm_transaction(*c_storm);
 
-    auto pessoa = std::unique_ptr<Models::Pessoa>(new Models::Pessoa());
+    auto pessoa = std::make_unique<Models::Pessoa>();
 
     std::string query = "SELECT nome, numero FROM contatos WHERE cpf is not null AND (cpf = $1 OR cpf = $2)";
     std::cout << "Executing query: " << query << std::endl;

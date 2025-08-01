@@ -30,8 +30,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdd1b8fb-e9bd-4fee-bf0b-78ff618a54a4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Process.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Process.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Utils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/D_Fetch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/D_Fetch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Process.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Process.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
@@ -140,7 +142,7 @@
       <updated>1753977830259</updated>
       <workItem from="1753977833130" duration="8915000" />
       <workItem from="1754046078944" duration="4245000" />
-      <workItem from="1754057841221" duration="5644000" />
+      <workItem from="1754057841221" duration="6001000" />
     </task>
     <servers />
   </component>

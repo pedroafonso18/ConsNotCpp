@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void Insert::insertConsultaLog(std::string cpf, std::string saldo, std::string aviso, std::string login, std::string nome, std::string numero, bool erro) {
+void Insert::insertConsultaLog(std::string cpf, std::string saldo, std::string aviso, std::string login, std::string nome, std::string numero, bool erro) const {
     auto c = db->getConnection();
     if (!c->is_open()) {
         std::clog << "ERROR: db connection is not open.\n";
@@ -29,7 +29,7 @@ void Insert::insertConsultaLog(std::string cpf, std::string saldo, std::string a
     transaction.commit();
 }
 
-void Insert::updateConsultado(std::string cpf, std::string campanha) {
+void Insert::updateConsultado(std::string cpf, std::string campanha) const {
     auto c = db->getConnection();
     if (!c->is_open()) {
         std::clog << "ERROR: db connection is not open.\n";

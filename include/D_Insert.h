@@ -10,7 +10,7 @@ public:
     explicit Insert(Database& db) : db(&db) {}
     explicit Insert(std::string Url)
         : ownedDb(std::unique_ptr<Database>(new Database(Url))), db(ownedDb.get()) {}
-    void insertConsultaLog(std::string cpf, std::string saldo, std::string aviso, std::string login, std::string nome, std::string numero, bool erro);
-    void updateConsultado(std::string cpf, std::string campanha);
+    void insertConsultaLog(std::string cpf, std::string saldo, std::string aviso, std::string login, std::string nome, std::string numero, bool erro) const;
+    void updateConsultado(std::string cpf, std::string campanha) const;
 };
 #endif //D_INSERT_H
