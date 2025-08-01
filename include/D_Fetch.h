@@ -12,7 +12,7 @@ private:
 public:
     explicit Fetch(Database& db) : db(&db) {}
     explicit Fetch(std::string Url)
-        : ownedDb(std::unique_ptr<Database>(new Database(Url))), db(ownedDb.get()) {}
+        : ownedDb(std::make_unique<Database>(Url)), db(ownedDb.get()) {}
     [[nodiscard]] std::string countConsultas(std::string user1, std::string user2, std::string user3, std::string user4) const;
     std::unique_ptr<Models::Pessoa> fetchConsultas(const Database* stormClient, std::string cpf);
     std::string fetchCurrentCampaign() const;
