@@ -5,7 +5,7 @@
 class Process {
 public:
     Process() = delete;
-    static void processCpf(std::string cpf);
+    static void processCpf(const std::string& cpf);
 };
 
 #endif

@@ -71,7 +71,7 @@ std::string Fetch::countConsultas(std::string user1, std::string user2, std::str
     try {
         auto result = transaction.exec(pqxx::zview("WITH counts AS ( SELECT COUNT(CASE WHEN login = $1 THEN 1 END) AS login1, COUNT(CASE WHEN login = $2 THEN 1 END) AS login2, COUNT(CASE WHEN login = $3 THEN 1 END) AS login3, COUNT(CASE WHEN login = $4 THEN 1 END) AS login4 FROM logs_consultas WHERE created_at >= NOW() - INTERVAL '24 hours' ) SELECT login, count FROM counts, LATERAL ( VALUES ($1, login1), ($2, login2), ($3, login3), ($4, login4) ) AS t(login, count) ORDER BY count ASC LIMIT 1;"), pqxx::params(user1, user2, user3, user4));
         if (!result.empty()) {
-            auto login = result[0][0].as<std::string>;
+            auto login = result.one_field().as<std::string>();
             transaction.commit();
             return login;
         }

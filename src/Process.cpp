@@ -10,7 +10,7 @@
 #include "../include/Requests.h"
 #include "../include/Config.h"
 
-void Process::processCpf(std::string cpf) {
+void Process::processCpf(const std::string& cpf) {
     auto start = std::chrono::system_clock::now();
     auto now = std::chrono::system_clock::to_time_t(start);
     std::clog << "[" << std::put_time(std::localtime(&now), "%FT%T") << "] [WORKER] Starting processing for CPF: " << cpf << std::endl;
@@ -23,8 +23,7 @@ void Process::processCpf(std::string cpf) {
     std::string login;
     std::string password;
     auto campanha = db_consultas.fetchCurrentCampaign();
-    auto counted = db_consultas.countConsultas(env.acesso1.first, env.acesso2.first, env.acesso3.first, env.acesso4.first);
-    if (env.acesso1.first == counted) {
+    if (auto counted = db_consultas.countConsultas(env.acesso1.first, env.acesso2.first, env.acesso3.first, env.acesso4.first); env.acesso1.first == counted) {
         login = env.acesso1.first;
         password = env.acesso1.second;
     } else if (env.acesso2.first == counted) {
@@ -54,8 +53,7 @@ void Process::processCpf(std::string cpf) {
 
     std::string nome, numero;
     try {
-        auto consultas = db_search.fetchConsultas(&db_storm, cpf);
-        if (consultas) {
+        if (auto consultas = db_search.fetchConsultas(&db_storm, cpf)) {
             nome = consultas->nome;
             numero = consultas->numero;
             std::clog << "[" << std::put_time(std::localtime(&now), "%FT%T") << "] [WORKER] Found nome/numero for CPF " << cpf << ": " << nome << " / " << numero << std::endl;
